@@ -32,7 +32,7 @@ class Store extends Model
     }
 
 
-    public function product(): HasManyThrough
+    public function productStore(): HasManyThrough
     {
         return $this->hasManyThrough(Product::class, Stock::class);
     }

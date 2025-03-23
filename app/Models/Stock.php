@@ -23,7 +23,7 @@ class Stock extends Model
         'quantity',
     ];
 
-    public function product(): HasOne
+    public function productStock(): HasOne
     {
         return $this->hasOne(Product::class);
     }
