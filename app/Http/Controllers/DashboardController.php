@@ -2,44 +2,63 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Order;
 use App\Models\Store;
 use App\Models\Product;
+use App\Mail\MyTestMail;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Supplier;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\CustomerRequest;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Redirect;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-
-        $totalCustomers = Customer::count();
-
-        $totalSuppliers = Supplier::count();
+        // $totalCustomers = Customer::count();
+        // $totalSuppliers = Supplier::count();
 
         // $allCustomers = DB::table('customers')->get();
 
         // $allSupplierss = DB::table('suppliers')->get();
 
-        $categories = Category::all();
+        // $categories = Category::all();
+
+        // return view('dashboard', compact(
+        //     'totalCustomers',
+        //     'totalSuppliers',
+        //     // 'allCustomers',
+        //     // 'allSupplierss'
+        //     'categories',
+        // ));
+
+        // ----------------------------
+
+        $user = User::find(1); //cherche l'utilisateur dont le id est 1
+        return view('dashboard',[
+            'pic'=>$user->avatar,
+            'totalCustomers' => Customer::count(),
+            'totalSuppliers' => Supplier::count(),
+            'totalProducts' => Product::count(),
+            'categories' => Category::all()
+            ]);
 
 
-        return view('dashboard', compact(
-            'totalCustomers',
-            'totalSuppliers',
-            // 'allCustomers',
-            // 'allSupplierss'
-            'categories',
-        ));
     }
 
 
     public function customers()
     {
-        $customers = Customer::all();
+        // $customers = Customer::all();
+        $customers = Customer::paginate(10);
         return view('customers.index', compact('customers'));
     }
 
@@ -51,8 +70,12 @@ class DashboardController extends Controller
 
     public function products()
     {
-        $products = Product::all();
-        return view('products.index', compact('products'));
+        // $products = Product::all();
+        // return view('products.index', compact('products'));
+
+        return view('products.index', [
+            'products' => Product::with(['category', 'supplier', 'stock'])->get()
+        ]);
     }
 
 
@@ -212,5 +235,87 @@ class DashboardController extends Controller
 
     // --------------------------------------------------------------------------------------
     // --------------------------------------------------------------------------------------
+
+    public function create()
+    {
+        return view('customers.create');
+    }
+
+
+
+    public function store(CustomerRequest $request): RedirectResponse
+    {
+        Customer::create($request->validated());
+        Mail::to($request->email)->send(new MyTestMail($request->first_name.' '.$request->last_name));
+        return redirect()->route('customers.index')
+            ->with('success', 'Customer created successfully.');
+    }
+
+
+    public function edit(Customer $customer)
+    {
+        return view('customers.edit', compact('customer'));
+    }
+
+
+    public function update(CustomerRequest $request, Customer $customer): RedirectResponse
+    {
+        // The request is automatically validated by the CustomerRequest class
+        $customer->update($request->validated());
+
+        return redirect()->route('customers.index')
+            ->with('success', 'Customer updated successfully.');
+    }
+
+
+    public function delete(Customer $customer)
+    {
+        return view('customers.delete', compact('customer'));
+    }
+
+
+    public function destroy(Customer $customer): RedirectResponse
+    {
+        $customer->delete();
+
+        return redirect()->route('customers.index')
+            ->with('success', 'Customer deleted successfully.');
+    }
+
+
+    // --------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------------
+
+    public function saveCookie()
+    {
+        $name = request()->input("txtCookie");
+        //Cookie::put("UserName",$name,6000000);
+        Cookie::queue("UserName",$name,6000000);
+        return redirect()->back();
+    }
+
+
+   public function saveSession(Request $request)
+    {
+        $name = $request->input("txtSession");
+        $request->session()->put('SessionName', $name);
+        return redirect()->back();
+    }
+
+
+
+    public function saveAvatar()
+    {
+        request()->validate([
+            'avatarFile'=>'required|image',
+                ]);
+        $ext = request()->avatarFile->getClientOriginalExtension();
+        $name = Str::random(30).time().".".$ext;
+        request()->avatarFile->move(public_path('storage/avatars'),$name);
+        $user = User::find(1);
+        $user->update(['avatar'=>$name]);
+        return redirect()->back();
+    }
+
 
 }

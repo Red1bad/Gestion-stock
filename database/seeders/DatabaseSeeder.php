@@ -2,14 +2,15 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\Category;
-use App\Models\Customer;
+use App\Models\User;
 use App\Models\Order;
-use App\Models\Product;
 use App\Models\Stock;
 use App\Models\Store;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\Customer;
 use App\Models\Supplier;
+use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,14 +19,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        User::factory(1)->create();
+
         // Create suppliers, stores, and categories
-        $suppliers = Supplier::factory()->count(10)->create();
+        $suppliers = Supplier::factory()->count(100)->create();
         $stores = Store::factory()->count(5)->create();
         $categories = Category::factory()->count(10)->create();
 
         // Create products with random suppliers and categories
         $products = Product::factory()
-            ->count(50)
+            ->count(100)
             ->state(fn () => [
                 'supplier_id' => $suppliers->random()->id,
                 'category_id' => $categories->random()->id,
@@ -33,7 +36,7 @@ class DatabaseSeeder extends Seeder
             ->create();
 
         // Create 20 customers
-        $customers = Customer::factory()->count(20)->create();
+        $customers = Customer::factory()->count(100)->create();
 
         // Distribute 30 orders among the 20 customers
         $orders = collect();
