@@ -165,11 +165,23 @@
                             <a href="{{ route('orders.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
                                 Orders
                             </a>
+                            <a href="{{ route('logout') }}" class="btn btn-dark">
+                                Logout
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </nav>
+
+        <div class="text-center my-1">
+            <h1 class="display-1 fw-bold text-gradient bg-primary bg-opacity-10 p-4 rounded-3 shadow">
+                Welcome world
+            </h1>
+            {{-- <h1 class="fw-bold text-primary bg-primary bg-opacity-10 p-3 rounded-4 shadow-sm mb-4">
+                Welcome world
+            </h1> --}}
+        </div>
 
         <!-- Page Content -->
         <main class="py-10">
