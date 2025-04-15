@@ -17,8 +17,8 @@ class ProductExport implements FromCollection, WithCustomStartCell,WithHeadings
     {
         return Product::join('categories', 'category_id','=' ,'categories.id')
         ->join('suppliers', 'supplier_id','=' ,'suppliers.id')
-        ->select('products.id', 'products.name','products.description',  'price',
-            DB::raw("CONCAT(suppliers.first_name, ' ', suppliers.last_name) as supplier") , 'categories.name as category')
+        ->select('products.id', 'products.name','products.description',  'price', 'categories.name as category',
+            DB::raw("CONCAT(suppliers.first_name, ' ', suppliers.last_name) as supplier") )
         ->get();
     }
 

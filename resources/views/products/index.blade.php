@@ -74,9 +74,24 @@
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl font-bold">Products</h2>
 
-                <a class="btn btn-warning float-end" href="{{ route('products.export') }}">
+                {{-- <a class="btn btn-warning float-end" href="{{ route('products.export') }}">
                     <i class="fa fa-download"></i> Export Products Data
                 </a>
+
+                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                    data-bs-target="#importProductModal">
+                    <i class="fa fa-file"></i> Import
+                </button> --}}
+
+                <div class="d-flex gap-2">
+                    <a class="btn btn-warning" href="{{ route('products.export') }}"><i class="fa fa-download"></i>
+                        Export Products Data</a>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#importProductModal">
+                        <i class="fa fa-file"></i> Import
+                    </button>
+                </div>
+
 
                 <button type="button" class="btn btn-success d-flex align-items-center gap-2" data-bs-toggle="modal"
                     data-bs-target="#createProductModal">
@@ -212,6 +227,7 @@
 @include('products.partials.create-modal')
 @include('products.partials.edit-modal')
 @include('products.partials.delete-modal')
+@include('products.partials.import-modal')
 
 @push('scripts')
 <script>
