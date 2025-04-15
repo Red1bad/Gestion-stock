@@ -6,6 +6,8 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use App\Exports\ProductExport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\Storage;
 
@@ -111,4 +113,15 @@ class ProductController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+
+
+      /**
+    * @return \Illuminate\Support\Collection
+    */
+    public function export()
+    {
+        return Excel::download(new ProductExport, 'products.xlsx');
+    }
+
 }

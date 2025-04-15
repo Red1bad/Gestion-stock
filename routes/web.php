@@ -169,4 +169,7 @@ Route::middleware('auth')->group(function () {
     });
 
 
+    // Export
+    Route::get('products-export', [ProductController::class, 'export'])->name('products.export');
+
 });

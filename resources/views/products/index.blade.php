@@ -74,6 +74,10 @@
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl font-bold">Products</h2>
 
+                <a class="btn btn-warning float-end" href="{{ route('products.export') }}">
+                    <i class="fa fa-download"></i> Export Products Data
+                </a>
+
                 <button type="button" class="btn btn-success d-flex align-items-center gap-2" data-bs-toggle="modal"
                     data-bs-target="#createProductModal">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
