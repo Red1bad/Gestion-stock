@@ -156,4 +156,17 @@ Route::middleware('auth')->group(function () {
     Route::post("/saveCookie", [DashboardController::class, 'saveCookie'])->name("saveCookie");
     Route::post("/saveSession", [DashboardController::class, 'saveSession'])->name("saveSession");
     Route::post("/saveAvatar", [DashboardController::class, 'saveAvatar'])->name("saveAvatar");
+
+
+
+    // Traduction
+
+    Route::get('/changeLocale/{locale}', function (string $locale) {
+        if (in_array($locale, ['en', 'es', 'fr', 'ar'])) {
+            session()->put('locale', $locale);
+         }
+        return redirect()->back();
+    });
+
+
 });

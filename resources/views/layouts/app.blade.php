@@ -145,30 +145,36 @@
                         <!-- Logo -->
                         <div class="flex-shrink-0 flex items-center">
                             <a href="{{ route('dashboard') }}" class="text-xl font-bold text-gray-800">
-                                Gestion Stock
+                                @lang("Gestion Stock")
                             </a>
                         </div>
                         <!-- Navigation Links -->
                         <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                             <a href="{{ route('dashboard') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-indigo-500 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out">
-                                Dashboard
+                                {{ trans('Dashboard') }}
                             </a>
                             <a href="{{ route('customers.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
-                                Customers
+                                {{ __('Customers') }}
                             </a>
                             <a href="{{ route('suppliers.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
-                                Suppliers
+                                @lang('Suppliers')
                             </a>
                             <a href="{{ route('products.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
-                                Products
+                                @lang('Products')
                             </a>
                             <a href="{{ route('orders.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
-                                Orders
+                                @lang('Orders')
                             </a>
                             <a href="{{ route('logout') }}" class="btn btn-dark">
-                                Logout
+                                @lang('Logout')
                             </a>
                         </div>
+                        <select name="selectLocale" id="selectLocale" class="ml-20">
+                            <option @if(app()->getLocale() == 'ar') selected @endif value="ar">ar</option>
+                            <option @if(app()->getLocale() == 'fr') selected @endif value="fr">fr</option>
+                            <option @if(app()->getLocale() == 'en') selected @endif value="en">en</option>
+                            <option @if(app()->getLocale() == 'es') selected @endif value="es">es</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -176,11 +182,12 @@
 
         <div class="text-center my-1">
             <h1 class="display-1 fw-bold text-gradient bg-primary bg-opacity-10 p-4 rounded-3 shadow">
-                Welcome world
+                @lang("Welcome") {{ __('world') }}
             </h1>
             {{-- <h1 class="fw-bold text-primary bg-primary bg-opacity-10 p-3 rounded-4 shadow-sm mb-4">
                 Welcome world
             </h1> --}}
+            {{-- {{ trans('Dashboard') }} --}}
         </div>
 
         <!-- Page Content -->
@@ -192,10 +199,23 @@
 
     </div> <!-- Fermeture correcte de la div min-h-screen -->
 
+    <footer class="bg-dark text-white text-center py-3">
+        <div class="container">
+            <p class="mb-0">&copy; {{ date('Y') }} Gestion Stock. All rights reserved.</p>
+        </div>
+    </footer>
+
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $("#selectLocale").on('change',function(){
+            var locale = $(this).val();
+            window.location.href = "/changeLocale/"+locale;
+        })
+    </script>
 
     @stack('scripts')
 </body>
