@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ForgotPasswordController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 // // Route::get('/', function () {
@@ -121,6 +122,16 @@ Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 
 
+// reset password
+Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
+Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
+Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
+Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
+
+
+
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/customers', [DashboardController::class, 'customers'])->name('customers.index');
@@ -172,7 +183,8 @@ Route::middleware('auth')->group(function () {
     // Export
     Route::get('products-export', [ProductController::class, 'export'])->name('products.export');
 
-    // Import 
+    // Import
     Route::post('products-import', [ProductController::class, 'import'])->name('products.import');
+
 
 });
