@@ -74,66 +74,70 @@
 
     <main class="container bg-white flex-grow-1 text-center py-4">
 
-        <div class="justify-content-center gap-3">
-            <div>
-                <h1>
-                    Hello
-                    @if(Cookie::has("UserName"))
-                            {{Cookie::get("UserName")}}
-                    @endif
-                </h1>
-            </div>
-            <div>
-                <form method="POST" action="saveCookie">
-                    @csrf
-                    <label for="txtCookie">{{__('Type your name')}}</label>
-                    <input type="text" id = "txtCookie" name = "txtCookie" />
-                    <button class="btn btn-primary bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        {{__('Save Cookie') }}
-                    </button>
-                </form>
-            </div>
-        </div>
+        <div class="text-center">
+            <h1 class="fw-bold display-6">
+                Hello
+                @if(Cookie::has("UserName"))
+                    {{ Cookie::get("UserName") }}
+                @endif
+            </h1>
 
-        <br><br>
-        <hr>
-        <br><br>
-
-        <div>
-            <div>
-                <h1>
-                    Hello
-                    @if(Session::has("SessionName"))
-                            {{Session("SessionName")}}
-                    @endif
-                </h1>
-            </div>
-            <div>
-                <form method="POST" action="saveSession">
-                    @csrf
-                    <label for="txtSession">{{__('Type your name')}}</label>
-                    <input type="text" id = "txSession" name = "txtSession" />
-                    <button class="btn btn-primary bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        {{__('Save Session') }}
-                    </button>
-                </form>
-            </div>
-        </div>
-
-        <br><br>
-        <hr>
-        <br><br>
-
-        <div>
-            <form method="POST" action="saveAvatar"  enctype="multipart/form-data" >
+            <form method="POST" action="saveCookie" class="mt-2">
                 @csrf
-                <label for="avatarFile">@lang('Choose your picture')</label>
-                <input type="file" id = "avatarFile"  name = "avatarFile" />
-                <button class="btn btn-primary bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    {{__('Save picture') }} {{ trans("for your account") }}
+                <label for="txtCookie" class="form-label">{{ __('Type your name') }}</label>
+                <input type="text" id="txtCookie" name="txtCookie" class="form-control d-inline-block w-auto mx-2" />
+                <button type="submit" class="btn btn-primary">
+                    {{ __('Save Cookie') }}
                 </button>
+            </form>
+        </div>
+
+
+
+        <br><br>
+        <hr>
+        <br><br>
+
+
+        <div class="text-center">
+            <h1 class="fw-bold display-6">
+                Hello
+                @if(Session::has("SessionName"))
+                    {{ Session("SessionName") }}
+                @endif
+            </h1>
+
+            <form method="POST" action="saveSession" class="mt-2">
+                @csrf
+                <label for="txtSession" class="form-label">{{ __('Type your name') }}</label>
+                <input type="text" id="txtSession" name="txtSession" class="form-control d-inline-block w-auto mx-2" />
+                <button type="submit" class="btn btn-primary">
+                    {{ __('Save Session') }}
+                </button>
+            </form>
+        </div>
+
+
+        <br><br>
+        <hr>
+        <br><br>
+
+
+        <div class="text-center">
+            <form method="POST" action="saveAvatar" enctype="multipart/form-data">
+                @csrf
+                <div class="mb-3">
+                    <label for="avatarFile" class="form-label">{{ __('Choose your picture') }}</label>
+                    <input type="file" id="avatarFile" name="avatarFile" class="form-control w-auto d-inline-block mx-2" />
+                    <button type="submit" class="btn btn-primary">
+                        {{ __('Save picture') }} {{ trans('for your account') }}
+                    </button>
+                </div>
                 {{--  il faut executer php artisan storage:link pour assosier le racourcis storage --}}
-                <img style = "width:200px; border-radius:50%" src="{{"storage/avatars/".$pic}}" alt="">
+                <div class="d-flex justify-content-center">
+                    <img src="{{ asset('storage/avatars/'.$pic) }}" alt="avatar" class="rounded-circle" style="width: 200px;">
+                </div>
+
             </form>
         </div>
 

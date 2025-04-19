@@ -4,21 +4,25 @@ namespace App\Exports;
 
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\Font;
 use PhpOffice\PhpSpreadsheet\Style\Color;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Style\Border;
+use Maatwebsite\Excel\Concerns\WithDrawings;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithBackgroundColor;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 
-class ProductExport implements FromCollection, WithCustomStartCell,WithHeadings, WithColumnWidths, WithStyles, ShouldAutoSize, WithBackgroundColor
+class ProductExport implements FromCollection, WithCustomStartCell,WithHeadings, WithColumnWidths, WithStyles, ShouldAutoSize, WithBackgroundColor, WithDrawings
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -39,12 +43,12 @@ class ProductExport implements FromCollection, WithCustomStartCell,WithHeadings,
      */
     public function headings(): array
     {
-        return ['id',
-        'name',
-        'description',
-        'price',
-        'category',
-        'supplier'];
+        return ['Id',
+        'Name',
+        'Description',
+        'Price',
+        'Category',
+        'Supplier'];
     }
 
     public function startCell(): string
@@ -90,6 +94,35 @@ class ProductExport implements FromCollection, WithCustomStartCell,WithHeadings,
 
     public function styles(Worksheet $sheet)
     {
+
+        // Ajouter le titre
+        $sheet->mergeCells('C3:H3');
+        $sheet->setCellValue('C3', 'LISTE DES PRODUITS');
+
+        // Style du titre
+        $sheet->getStyle('C3')->applyFromArray([
+            'font' => [
+                'name' => 'Arial',
+                'bold' => true,
+                'size' => 18,
+                'color' => ['rgb' => '000000']
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => [
+                    'rgb' => 'FFFF99' // Jaune pâle par exemple
+                ]
+            ],
+        ]);
+
+
+
+        // Style de l'en-tête des colonnes
+
         $sheet->getRowDimension(5)->setRowHeight(40);
 
         $sheet->getStyle('C5:H5')->applyFromArray(
@@ -143,7 +176,7 @@ class ProductExport implements FromCollection, WithCustomStartCell,WithHeadings,
                 'borders' => [
                     'allBorders' => [
                         'borderStyle' => Border::BORDER_THICK,
-                        'color' => ['rgb' => '00FF00'], // Vert
+                        'color' => ['rgb' => '000000'], // noir
                     ],
                 ],
                 'fill' => [
@@ -160,6 +193,79 @@ class ProductExport implements FromCollection, WithCustomStartCell,WithHeadings,
                 'quotePrefix' => true
             ]
         );
+
+
+
+
+
+        $lastRow = $sheet->getHighestRow(); // détecte la dernière ligne de données
+
+
+        // Personnaliser tous les cellusles 'C'
+        $sheet->getStyle('C6:C' . $lastRow)->applyFromArray([
+            'font' => [
+                'name' => 'Arial',
+                'size' => 11,
+                'bold' => true,
+                'color' => ['rgb' => '000000'],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => [
+                    'rgb' => 'FFDDDD', // rouge pâle par exemple
+                ],
+            ],
+        ]);
+
+
+
+        // Personnaliser tous les cellusles 'F'
+        $sheet->getStyle('F6:F' . $lastRow)->applyFromArray([
+            'font' => [
+                'name' => 'Arial',
+                'size' => 14,
+                'bold' => true,
+                'color' => ['rgb' => '008000'],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => [
+                    'rgb' => 'FFD700',
+                ],
+            ],
+        ]);
+
+    }
+
+
+    /**
+     * Insertion du logo
+     */
+    public function drawings()
+    {
+        $drawing = new Drawing();
+        $drawing->setName('Logo');
+        $drawing->setDescription('Company Logo');
+        $drawing->setPath(public_path('images/RB5.jpg')); // <-- mets ici le bon chemin vers ton logo
+        // $drawing->setPath('C:\Users\DELL\Pictures\RB\RB5.jpg'); // ← sans public_path()
+        $drawing->setHeight(90);
+        $drawing->setCoordinates('A1'); // Position du logo
+        $drawing->setOffsetX(10);
+        $drawing->setOffsetY(10);
+
+
+
+        // Deuxième image
+        $drawing2 = new Drawing();
+        $drawing2->setName('Ofppt');
+        $drawing2->setDescription('Ofppt');
+        $drawing2->setPath(public_path('images/logo.png'));
+        $drawing2->setHeight(150);
+        $drawing2->setCoordinates('I1');
+        $drawing2->setOffsetX(30);
+        $drawing2->setOffsetY(30);
+
+        return [$drawing, $drawing2];
     }
 
 }
