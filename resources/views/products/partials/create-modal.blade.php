@@ -66,39 +66,40 @@
 
 @push('scripts')
 <script>
-$(document).ready(function() {
-    $('#createProductForm').on('submit', function(e) {
-        e.preventDefault();
-        let form = $(this);
-        let formData = new FormData(this);
+    $(document).ready(function() {
+        $('#createProductForm').on('submit', function(e) {
+            e.preventDefault();
+            let form = $(this);
+            let formData = new FormData(this);
 
-        $.ajax({
-            url: form.attr('action'),
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                $('#createProductModal').modal('hide');
-                window.location.reload();
-            },
-            error: function(xhr) {
-                let errors = xhr.responseJSON.errors;
-                Object.keys(errors).forEach(function(field) {
-                    let input = form.find(`[name=${field}]`);
-                    input.addClass('is-invalid');
-                    input.siblings('.invalid-feedback').text(errors[field][0]);
-                });
-            }
+            $.ajax({
+                url: form.attr('action'),
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    $('#createProductModal').modal('hide');
+                    window.location.reload();
+                },
+                error: function(xhr) {
+                    let errors = xhr.responseJSON.errors;
+                    Object.keys(errors).forEach(function(field) {
+                        let input = form.find(`[name=${field}]`);
+                        input.addClass('is-invalid');
+                        input.siblings('.invalid-feedback').text(errors[field][0]);
+                    });
+                }
+            });
+        });
+
+        $('#createProductModal').on('hidden.bs.modal', function() {
+            let form = $('#createProductForm');
+            form.trigger('reset');
+            form.find('.is-invalid').removeClass('is-invalid');
+            form.find('.invalid-feedback').empty();
         });
     });
 
-    $('#createProductModal').on('hidden.bs.modal', function() {
-        let form = $('#createProductForm');
-        form.trigger('reset');
-        form.find('.is-invalid').removeClass('is-invalid');
-        form.find('.invalid-feedback').empty();
-    });
-});
 </script>
 @endpush

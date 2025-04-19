@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Log;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Supplier;
@@ -66,7 +67,6 @@ class ProductController extends Controller
         return redirect()->route('products.index')
             ->with('success', 'Product created successfully.');
     }
-
 
 
     public function show(Product $product)

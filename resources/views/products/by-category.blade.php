@@ -59,9 +59,9 @@
                 <div class="row mb-4">
                     <div class="col-md-4">
                         <select class="form-select" onchange="window.location.href=this.value">
-                            <option value="{{ route('products.category') }}" {{ !request()->route('category') ? 'selected' : '' }}>Select a category</option>
+                            <option value="{{ route('products.by.category') }}" {{ !request()->route('category') ? 'selected' : '' }}>Select a category</option>
                             @foreach($categories as $cat)
-                                <option value="{{ route('products.filter.category', $cat) }}" {{ request()->route('category')?->id === $cat->id ? 'selected' : '' }}>
+                                <option value="{{ route('products.filter.by.category', $cat) }}" {{ request()->route('category')?->id === $cat->id ? 'selected' : '' }}>
                                     {{ $cat->name }}
                                 </option>
                             @endforeach

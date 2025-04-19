@@ -136,20 +136,25 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/customers', [DashboardController::class, 'customers'])->name('customers.index');
     Route::get('/suppliers', [DashboardController::class, 'suppliers'])->name('suppliers.index');
+
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
     Route::get('/api/products/{product}', [ProductController::class, 'show'])->name('api.products.show');
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 
-    Route::get('/products-category', [DashboardController::class, 'productsByCategory'])->name('products.category');
-    Route::get('/products-category/{category}', [DashboardController::class, 'getProductsByCategory'])->name('products.filter.category');
 
-    Route::get('/products-supplier', [DashboardController::class, 'productsBySupplier'])->name('products.supplier');
-    Route::get('/api/products-supplier/{supplier}', [DashboardController::class, 'getProductsBySupplier'])->name('api.products.supplier');
+    Route::get('/products-by-category', [DashboardController::class, 'productsByCategory'])->name('products.by.category');
+    Route::get('/products-by-category/{category}', [DashboardController::class, 'getProductsByCategory'])->name('products.filter.by.category');
 
-    Route::get('/products-store', [DashboardController::class, 'productsByStore'])->name('products.store');
-    Route::get('/api/products-store/{store}', [DashboardController::class, 'getProductsByStore'])->name('api.products.store');
+
+    Route::get('/products-by-supplier', [DashboardController::class, 'productsBySupplier'])->name('products.by.supplier');
+    Route::get('/api/products-by-supplier/{supplier}', [DashboardController::class, 'getProductsBySupplier'])->name('api.products.by.supplier');
+
+
+    Route::get('/products-by-store', [DashboardController::class, 'productsByStore'])->name('products.by.store');
+    Route::get('/api/products-by-store/{store}', [DashboardController::class, 'getProductsByStore'])->name('api.products.by.store');
+
 
     Route::get('/orders', [DashboardController::class, 'orders'])->name('orders.index');
     Route::get('/api/customers/search', [DashboardController::class, 'search'])->name('customers.search');
@@ -157,12 +162,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/api/customers/{customer}/orders', [DashboardController::class, 'getCustomerOrders'])->name('customers.orders');
     Route::get('/api/orders/{order}/details', [DashboardController::class, 'getOrderDetails'])->name('orders.details');
 
+
     Route::get('/customers/create', [DashboardController::class, 'create'])->name('customers.create');
     Route::post('/customers', [DashboardController::class, 'store'])->name('customers.store');
     Route::get('/customer/{customer}/edit', [DashboardController::class, 'edit'])->name('customers.edit');
     Route::put('/customers/{customer}', [DashboardController::class, 'update'])->name('customers.update');
     Route::get('/customers/{customer}/delete', [DashboardController::class, 'delete'])->name('customers.delete');
     Route::delete('/customers/{customer}', [DashboardController::class, 'destroy'])->name('customers.destroy');
+
 
     Route::post("/saveCookie", [DashboardController::class, 'saveCookie'])->name("saveCookie");
     Route::post("/saveSession", [DashboardController::class, 'saveSession'])->name("saveSession");

@@ -105,14 +105,14 @@ class DashboardController extends Controller
     {
         $categories = Category::all();
         $products = collect();
-        return view('products.category', compact('categories', 'products'));
+        return view('products.by-category', compact('categories', 'products'));
     }
 
     public function getProductsByCategory(Category $category)
     {
         $categories = Category::all();
         $products = $category->productCat;
-        return view('products.category', compact('categories', 'products'));
+        return view('products.by-category', compact('categories', 'products'));
     }
 
 
@@ -122,7 +122,7 @@ class DashboardController extends Controller
     public function productsBySupplier()
     {
         $suppliers = Supplier::all();
-        return view('products.supplier', compact('suppliers'));
+        return view('products.by-supplier', compact('suppliers'));
     }
 
 
@@ -135,7 +135,7 @@ class DashboardController extends Controller
 
         // dd($products);
 
-        return view('products._products_supplier', compact('products'));
+        return view('products._products_by_supplier', compact('products'));
     }
 
 
@@ -145,7 +145,7 @@ class DashboardController extends Controller
     public function productsByStore()
     {
         $stores = Store::all();
-        return view('products.store', compact('stores'));
+        return view('products.by-store', compact('stores'));
     }
 
 

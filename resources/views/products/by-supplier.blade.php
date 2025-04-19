@@ -41,7 +41,7 @@
             if (supplierId) {
                 loadingElement.classList.remove('d-none');
 
-                axios.get(`/api/products-supplier/${supplierId}`)
+                axios.get(`/api/products-by-supplier/${supplierId}`)
                     .then(response => {
                         productsContainer.innerHTML = response.data;
                     })

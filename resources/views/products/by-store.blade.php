@@ -43,7 +43,7 @@
             loadingElement.classList.remove('d-none');
 
 
-            axios.get(`/api/products-store/${storeId}`)
+            axios.get(`/api/products-by-store/${storeId}`)
                 .then(response => {
                     const products = response.data;
                     let html = '<div class="table-responsive"><table class="table table-hover"><thead><tr>';
