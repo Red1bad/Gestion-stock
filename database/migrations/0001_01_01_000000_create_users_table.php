@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('role')->default('normal');
             $table->boolean('is_active')->default(true);
             $table->string('avatar')->nullable();
+            $table->boolean('is_email_verified')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
