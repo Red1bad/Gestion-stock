@@ -74,72 +74,97 @@
 
     <main class="container bg-white flex-grow-1 text-center py-4">
 
-        <div class="text-center">
-            <h1 class="fw-bold display-6">
-                Hello
-                @if(Cookie::has("UserName"))
-                    {{ Cookie::get("UserName") }}
-                @endif
-            </h1>
 
-            <form method="POST" action="saveCookie" class="mt-2">
-                @csrf
-                <label for="txtCookie" class="form-label">{{ __('Type your name') }}</label>
-                <input type="text" id="txtCookie" name="txtCookie" class="form-control d-inline-block w-auto mx-2" />
-                <button type="submit" class="btn btn-primary">
-                    {{ __('Save Cookie') }}
-                </button>
-            </form>
+
+
+
+        <div class="row g-0">
+            <!-- Section Cookie -->
+            <div class="col-lg-6 position-relative pe-lg-4">
+                <div class="position-absolute end-0 top-0 bottom-0 border-end d-none d-lg-block"></div>
+
+                <div class="h-100 px-4">
+                    <h2 class="fw-bold mb-4 text-primary fs-2">
+                        <i class="bi bi-cookie me-2"></i>
+                        @if(Cookie::has("UserName"))
+                            Hello {{ Cookie::get("UserName") }}!
+                        @else
+                            {{ __('Cookie Name') }}
+                        @endif
+                    </h2>
+
+                    <form method="POST" action="saveCookie" class="mt-3">
+                        @csrf
+                        <div class="form-floating mb-3 mx-auto" style="max-width: 400px;">
+                            <input type="text" id="txtCookie" name="txtCookie"
+                                    class="form-control" placeholder="{{ __('Type your name') }}">
+                            <label for="txtCookie">{{ __('Type your name') }}</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary px-4 py-2">
+                            <i class="bi bi-save me-2"></i>
+                            {{ __('Save Cookie') }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Section Session -->
+            <div class="col-lg-6 ps-lg-4">
+                <div class="h-100 px-4">
+                    <h2 class="fw-bold mb-4 text-success fs-2">
+                        <i class="bi bi-people-fill me-2"></i>
+                        @if(Session::has("SessionName"))
+                            Hello {{ Session("SessionName") }}!
+                        @else
+                            {{ __('Session Name') }}
+                        @endif
+                    </h2>
+
+                    <form method="POST" action="saveSession" class="mt-3">
+                        @csrf
+                        <div class="form-floating mb-3 mx-auto" style="max-width: 400px;">
+                            <input type="text" id="txtSession" name="txtSession"
+                                    class="form-control" placeholder="{{ __('Type your name') }}">
+                            <label for="txtSession">{{ __('Type your name') }}</label>
+                        </div>
+                        <button type="submit" class="btn btn-success px-4 py-2">
+                            <i class="bi bi-save me-2"></i>
+                            {{ __('Save Session') }}
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
 
 
 
         <br><br>
         <hr>
-        <br><br>
+        <br>
 
 
         <div class="text-center">
-            <h1 class="fw-bold display-6">
-                Hello
-                @if(Session::has("SessionName"))
-                    {{ Session("SessionName") }}
-                @endif
-            </h1>
-
-            <form method="POST" action="saveSession" class="mt-2">
-                @csrf
-                <label for="txtSession" class="form-label">{{ __('Type your name') }}</label>
-                <input type="text" id="txtSession" name="txtSession" class="form-control d-inline-block w-auto mx-2" />
-                <button type="submit" class="btn btn-primary">
-                    {{ __('Save Session') }}
-                </button>
-            </form>
-        </div>
-
-
-        <br><br>
-        <hr>
-        <br><br>
-
-
-        <div class="text-center">
+            <h2 class="mb-4 fw-bold fs-2 text-danger">AVATAR</h2>
             <form method="POST" action="saveAvatar" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
                     <label for="avatarFile" class="form-label">{{ __('Choose your picture') }}</label>
                     <input type="file" id="avatarFile" name="avatarFile" class="form-control w-auto d-inline-block mx-2" />
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-danger">
                         {{ __('Save picture') }} {{ trans('for your account') }}
                     </button>
                 </div>
-                {{--  il faut executer php artisan storage:link pour assosier le racourcis storage --}}
+                {{-- il faut executer php artisan storage:link pour assosier le racourcis storage --}}
                 <div class="d-flex justify-content-center">
-                    <img src="{{ asset('storage/avatars/'.$pic) }}" alt="avatar" class="rounded-circle" style="width: 200px;">
+                    <img src="{{ asset('storage/avatars/'.$pic) }}" alt="avatar"
+                        class="rounded-circle border border-4"
+                        style="width: 200px; height: 200px; object-fit: cover;">
                 </div>
 
             </form>
         </div>
+
+
 
 
     </main>

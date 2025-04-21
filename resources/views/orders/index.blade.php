@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row mb-4">
             <div class="col d-flex justify-content-between align-items-center">
-                <h2 class="mb-0">Customer Orders</h2>
+                <h2 class="mb-0 display-6 fw-bold">Customer Orders</h2>
             </div>
         </div>
 
@@ -53,7 +53,7 @@
 
     function displayCustomers(customers) {
         let html = '<div class="d-flex justify-content-between align-items-center mb-3">';
-        html += '<h3>Customers Found</h3>';
+        html += '<h3 class="display-6 fw-bold">Customers Found</h3>';
         html += '<button class="btn btn-outline-secondary btn-sm" onclick="toggleCustomerList()">';
         html += '<i class="bi bi-list"></i> Toggle Customer List</button>';
         html += '</div>';
@@ -81,7 +81,7 @@
             .then(response => {
                 const orders = response.data;
                 let html = '<div class="mb-3">';
-                html += '<h3>Customer Orders</h3>';
+                html += '<h3 class="display-6 fw-bold">Customer Orders</h3>';
                 html += '</div><div class="list-group">';
                 orders.forEach(order => {
                     html += `
@@ -94,7 +94,7 @@
                 $('#lstOrders').html(html);
 
                 // Automatically collapse the customer list after selection
-                // $('#customerListCollapse').collapse('hide');
+                $('#customerListCollapse').collapse('hide');
             });
     }
 
