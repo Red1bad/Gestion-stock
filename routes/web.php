@@ -101,3 +101,13 @@ Route::middleware(["auth",IsVerifyEmail::class])->group(function () {
 
 
 });
+
+
+// // Mail
+// Route::get('/test-mail', function(){
+//     $name = 'Hombre';
+//     // $eamils = ['elkaidzaid@gmail.com','redouanbader@gmail.com','imadfd03@gmail.com', 'zouhairkan2005@gmail.com'];
+//     $eamils = ['zouhairkan2005@gmail.com'];
+//     Mail::to($eamils)->send(new MyTestMail($name));
+//     return 'Mail sent';
+// });
