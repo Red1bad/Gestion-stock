@@ -4,6 +4,7 @@ use App\Mail\MyTestMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\IsVerifyEmail;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
@@ -98,6 +99,22 @@ Route::middleware(["auth",IsVerifyEmail::class])->group(function () {
 
     // Import
     Route::post('products-import', [ProductController::class, 'import'])->name('products.import');
+
+    // PDF
+    Route::get('/pdf', [PDFController::class, 'generatePDF'])->name('products.pdf');
+
+
+    // Print pdf avec logo utilisateur ou avatar
+    Route::get('/products/print', [ProductController::class, 'print'])->name('products.print');
+
+
+    // Details Product
+    Route::get('/products/{product}', [ProductController::class, 'details'])->name('products.details');
+    Route::get('/products/{product}/pdf', [ProductController::class, 'downloadPdf'])->name('products.downloadPdf');
+
+
+
+
 
 
 });

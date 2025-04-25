@@ -84,12 +84,16 @@
                 </button> --}}
 
                 <div class="d-flex gap-2">
+                    <a class="btn btn-secondary" href="{{ route('products.print') }}" target="_blank"><i class="fa fa-print"></i>
+                        Print</a>
                     <a class="btn btn-warning" href="{{ route('products.export') }}"><i class="fa fa-download"></i>
                         Export Products Data</a>
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                         data-bs-target="#importProductModal">
                         <i class="fa fa-file"></i> Import
                     </button>
+                    <a class="btn btn-primary" href="{{ route('products.pdf') }}"><i class="fa fa-download"></i>
+                        PDF</a>
                 </div>
 
 
@@ -138,6 +142,7 @@
                         <thead>
                             <tr>
                                 <th>Name</th>
+                                {{-- <th>Picture</th> --}}
                                 <th>Category</th>
                                 <th>Description</th>
                                 <th>Price</th>
@@ -150,6 +155,7 @@
                             @foreach($products as $product)
                             <tr>
                                 <td>{{ $product->name }}</td>
+                                {{-- <td><img src="{{ $product->picture }}" style="width: 100px; height: auto;"></td> --}}
                                 <td>{{ $product->category->name }}</td>
                                 <td>{{ $product->description }}</td>
                                 <td>${{ number_format($product->price, 2) }}</td>
@@ -181,6 +187,19 @@
                                             </svg>
                                             Delete
                                         </button>
+
+                                        {{-- <a href="{{ route('products.details', $product->id) }}" class="btn btn-sm btn-info">
+                                            <i class="bi bi-eye"></i> Détails
+                                        </a> --}}
+                                        <a href="{{ route('products.details', $product->id) }}" class="btn btn-sm btn-info">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                                <path d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zM8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0z"/>
+                                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 .876-.252 1.02-.598l.088-.416c.076-.347.223-.489.45-.548l.451-.083.082-.38-2.29-.287-.082-.38zm-1.812-2.29c-.282.295-.282.682 0 .977.295.282.682.282.977 0 .282-.295.282-.682 0-.977a.687.687 0 0 0-.977 0z"/>
+                                            </svg>
+                                            Détails
+                                        </a>
+
                                     </div>
                                 </td>
                             </tr>
@@ -270,6 +289,13 @@
                                         </svg>
                                         Delete
                                     </button>
+                                    <button type="button" class="btn btn-sm btn-info details-product" data-id="${product.id}" data-bs-toggle="modal" data-bs-target="#productDetailsModal">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                            <path d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zM8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0z"/>
+                                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 .876-.252 1.02-.598l.088-.416c.076-.347.223-.489.45-.548l.451-.083.082-.38-2.29-.287-.082-.38zm-1.812-2.29c-.282.295-.282.682 0 .977.295.282.682.282.977 0 .282-.295.282-.682 0-.977a.687.687 0 0 0-.977 0z"/>
+                                        </svg>
+                                        Details
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -323,6 +349,7 @@
                 success: function(product) {
                     $('#editProductId').val(product.id);
                     $('#editName').val(product.name);
+                    // $('#editPicture').val(product.picture);
                     $('#editDescription').val(product.description);
                     $('#editPrice').val(product.price);
                     $('#editCategoryId').val(product.category_id);
@@ -352,6 +379,31 @@
             let search = $('#searchInput').val();
             loadProducts(page, search);
         });
+
+
+        // Handle details product button click
+        $('.details-product').on('click', function() {
+                let productId = $(this).data('id');
+
+                $.ajax({
+                    url: `/api/products/${productId}`,
+                    type: 'GET',
+                    success: function(product) {
+                        // Show product details in the modal
+                        $('#productDetailsName').text(product.name);
+                        // $('#productDetailsPicture').text(product.picture);
+                        $('#productDetailsCategory').text(product.category.name);
+                        $('#productDetailsDescription').text(product.description);
+                        $('#productDetailsPrice').text(`$${parseFloat(product.price).toFixed(2)}`);
+                        $('#productDetailsStock').text(product.stock ? product.stock.quantity : 0);
+                        $('#productDetailsSupplier').text(`${product.supplier.first_name} ${product.supplier.last_name}`);
+                    },
+                    error: function(xhr) {
+                        console.error('Error fetching product data:', xhr);
+                    }
+                });
+            });
+
     }
 
     // Handle search

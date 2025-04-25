@@ -21,10 +21,10 @@ class ProductFactory extends Factory
         return [
             'supplier_id' => Supplier::factory(),
             'category_id' => Category::factory(),
-            'name' => fake()->name(),
-            'description' => fake()->paragraph(3, true),
+            'name' => fake()->word(),
+            'description' => fake()->sentence(10),
             'price' => fake()->numberBetween(1, 100),
-            'picture' => fake()->url(),
+            'picture' => fake()->imageUrl(640, 480, 'product', true),
         ];
     }
 }

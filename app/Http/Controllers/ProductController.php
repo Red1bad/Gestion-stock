@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use Log;
+use Mpdf\Mpdf;
+use App\Models\User;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Exports\ProductExport;
 use App\Imports\ProductImport;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\Storage;
@@ -132,6 +135,39 @@ class ProductController extends Controller
     {
         Excel::import(new ProductImport, $request->file('file'));
         return back()->with('success', 'Products imported successfully.');
+    }
+
+
+
+
+    // details 1 produits
+    public function details(Product $product)
+    {
+        return view('products.details', compact('product'));
+    }
+
+    public function downloadPdf(Product $product)
+    {
+        $pdf = PDF::loadView('products.pdf', compact('product'));
+        return $pdf->download('product_' . $product->id . '.pdf');
+    }
+
+
+    // Genere pdf avec logo user
+
+    public function print()
+    {
+        $user = User::find(1); // Get the authenticated user
+        $products = Product::with(['category', 'supplier', 'stock'])->get();
+        $data = [
+            'products' => $products,
+            'user' => $user // Pass the user to the view
+        ];
+
+        $mpdf = new Mpdf();
+        $html = view('products.print_pdf', $data)->render();
+        $mpdf->WriteHTML($html);
+        return $mpdf->Output('products.pdf', 'I'); // 'I' for inline display
     }
 
 }
